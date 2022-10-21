@@ -1,0 +1,373 @@
+title: "OCI multi-region deployment"
+description: "FoggyKitchen.com - OCI multi-region deployment."
+stackDescription: "FoggyKitchen.com - OCI multi-region deployment."
+schemaVersion: 1.1.0
+version: "20201028"
+locale: "en"
+
+variableGroups:
+- title: "General Configuration"
+  visible: false
+  variables:
+  - tenancy_ocid
+  - region
+  - availablity_domain_name1
+  - availablity_domain_name2
+  - availablity_domain_name3
+  - webservice_ports
+  - bastion_ports
+  - ATP_database_defined_tags_value
+  - ATP_database_freeform_tags
+
+- title: "Required Configuration"
+  visible: true  
+  variables:
+  - compartment_ocid
+  - region1
+  - region2
+  - region3
+  - ATP_password
+  - show_advanced 
+
+- title: "Network Optional Configuration"
+  visible: 
+      and:
+        - show_advanced
+  variables:
+  - Web-VCN1-CIDR
+  - Web-Subnet1-CIDR
+  - ATP-VCN1-CIDR
+  - ATP-Subnet1-CIDR
+  - Web-VCN2-CIDR
+  - Web-Subnet2-CIDR
+  - ATP-VCN2-CIDR
+  - ATP-Subnet2-CIDR
+  - Web-VCN3-CIDR
+  - Web-Subnet3-CIDR
+  - ATP-VCN3-CIDR
+  - ATP-Subnet3-CIDR
+
+- title: "Compute Optional Configuration"
+  visible: 
+      and:
+        - show_advanced
+  variables:
+  - Shape
+  - FlexShapeOCPUS
+  - FlexShapeMemory
+  - instance_os
+  - linux_os_version
+
+- title: "ATP Optional Configuration"
+  visible: 
+      and:
+        - show_advanced
+  variables:
+  - ATP_database_cpu_core_count
+  - ATP_database_data_storage_size_in_tbs
+  - ATP_database_db_name1
+  - ATP_database_db_name2
+  - ATP_database_db_name3
+  - ATP_database_db_version
+  - ATP_database_display_name1
+  - ATP_database_display_name2
+  - ATP_database_display_name3
+  - ATP_database_license_model
+
+variables:
+
+  show_advanced:
+    type: boolean
+    title: "Show advanced options?"
+    description: "Shows advanced options."
+    visible: true
+    default: false
+
+  # General Configuration
+  tenancy_ocid:
+    title: "Tenancy ID"
+    description: "The Oracle Cloud Identifier (OCID) for your tenancy"
+    type: string
+    required: true
+    visibile: false
+
+  region1:
+    title: "Region1"
+    description: "Choose Region1 where you deploy your the first Webserver and the first ATP."
+    type: oci:identity:region:name
+    required: true
+    visibile: true
+
+  region2:
+    title: "Region2"
+    description: "Choose Region1 where you deploy your the second Webserver and the second ATP."
+    type: oci:identity:region:name
+    required: true
+    visibile: true
+
+  region3:
+    title: "Region3"
+    description: "Choose Region1 where you deploy your the third Webserver and the third ATP."
+    type: oci:identity:region:name
+    required: true
+    visibile: true
+
+  compartment_ocid:
+    title: "Compartment OCID"
+    description: "Choose Comparment where you deploy your Webserver"
+    type: oci:identity:compartment:id
+    required: true
+    visibile: true
+
+  ATP_password: 
+    type: password
+    required: true
+    visibile: true
+    title: "ATP Database Password for ADMIN user."
+    description: "The password must start with a letter, and it can contain letters (uppercase, lowercase), numbers, and the symbols _ $ # ($ symbol cannot be the last character)."
+    minLength: 12
+    maxLength: 30
+    pattern: ^[A-Za-z][A-Za-z0-9_#\$]+[A-Za-z0-9_#]$ 
+
+  # Optional Configuration
+
+  Web-VCN1-CIDR:
+    type: string
+    required: false
+    pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
+    title: "Web VCN CIDR Block (region1)"
+    description: "Choose CIDR block for your Web VCN for the first region."
+
+  ATP-VCN1-CIDR:
+    type: string
+    required: false
+    pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
+    title: "ATP VCN CIDR Block (region1)"
+    description: "Choose CIDR block for your ATP VCN for the first region."
+
+  Web-Subnet1-CIDR:
+    type: string
+    required: false
+    pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
+    title: "Web Subnet CIDR Block (region1)"
+    description: "Choose CIDR block for your Web Subnet for the first region."
+
+  ATP-Subnet1-CIDR:
+    type: string
+    required: false
+    pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
+    title: "ATP Subnet CIDR Block (region1)"
+    description: "Choose CIDR block for your ATP Subnet for the first region."
+
+  Web-VCN2-CIDR:
+    type: string
+    required: false
+    pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
+    title: "Web VCN CIDR Block (region2)"
+    description: "Choose CIDR block for your Web VCN for the second region."
+
+  ATP-VCN2-CIDR:
+    type: string
+    required: false
+    pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
+    title: "ATP VCN CIDR Block (region2)"
+    description: "Choose CIDR block for your ATP VCN for the second region."
+
+  Web-Subnet2-CIDR:
+    type: string
+    required: false
+    pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
+    title: "Web Subnet CIDR Block (region2)"
+    description: "Choose CIDR block for your Web Subnet for the second region."
+
+  ATP-Subnet2-CIDR:
+    type: string
+    required: false
+    pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
+    title: "ATP Subnet CIDR Block (region2)"
+    description: "Choose CIDR block for your ATP Subnet for the second region."
+
+  Web-VCN3-CIDR:
+    type: string
+    required: false
+    pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
+    title: "Web VCN CIDR Block (region3)"
+    description: "Choose CIDR block for your Web VCN for the third region."
+
+  ATP-VCN3-CIDR:
+    type: string
+    required: false
+    pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
+    title: "ATP VCN CIDR Block (region3)"
+    description: "Choose CIDR block for your ATP VCN for the third region."
+
+  Web-Subnet3-CIDR:
+    type: string
+    required: false
+    pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
+    title: "Web Subnet CIDR Block (region3)"
+    description: "Choose CIDR block for your Web Subnet for the third region."
+
+  ATP-Subnet2-CIDR:
+    type: string
+    required: false
+    pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
+    title: "ATP Subnet CIDR Block (region2)"
+    description: "Choose CIDR block for your ATP Subnet for the second region."
+
+  Shape:
+    type: oci:core:instanceshape:name
+    required: false
+    title: "Instance Shape"
+    description: "A shape is a template that determines the number of CPUs, amount of memory, and other resources allocated to a newly created instance."
+    default: "VM.Standard.E4.Flex"
+    dependsOn:
+      compartmentId: ${compartment_ocid}
+
+  FlexShapeOCPUS:
+    type: number
+    required: false
+    minimum: 1
+    maximum: 128
+    multipleOf: 1
+    default: 1
+    title: "Flex Shape OCPUs"
+    description: "Choose number of OCPUs for Flex Shape."
+    visible:
+      and:
+        - or:
+          - eq:
+            - Shape 
+            - "VM.Standard.E3.Flex"
+          - eq:
+            - Shape 
+            - "VM.Standard.E4.Flex"
+          - eq:
+            - Shape 
+            - "VM.Standard.A1.Flex"
+          - eq:
+            - Shape 
+            - "VM.Optimized3.Flex"
+
+  FlexShapeMemory:
+    type: number
+    required: false
+    minimum: 1
+    maximum: 128
+    multipleOf: 1
+    default: 6
+    title: "Flex Shape Memory (GB)"
+    description: "Choose number GB for Flex Shape Memory."
+    visible:
+      and:
+        - or:
+          - eq:
+            - Shape 
+            - "VM.Standard.E3.Flex"
+          - eq:
+            - Shape 
+            - "VM.Standard.E4.Flex"
+          - eq:
+            - Shape 
+            - "VM.Standard.A1.Flex"
+          - eq:
+            - Shape 
+            - "VM.Optimized3.Flex"
+  
+  instance_os:
+    type: enum
+    required: false
+    title: "Instance OS"
+    description: "An Operating System that determines the operating system for the instance."
+    default: "Oracle Linux"
+    enum:
+      - "Oracle Linux"
+
+  linux_os_version:
+    type: enum
+    required: false
+    title: "Instance OS version"
+    description: "An Operating System version that determines the operating system version for the instance."
+    enum:
+      - "9"
+      - "8"
+
+  ATP_database_cpu_core_count:
+    type: number
+    required: false
+    minimum: 1
+    maximum: 128
+    multipleOf: 1
+    default: 1
+    title: "ATP Database CPU Core Count"
+    description: "Choose how many CPU cores will be used for ATP Instance."
+
+  ATP_database_data_storage_size_in_tbs:
+    type: number
+    required: false
+    minimum: 1
+    maximum: 128
+    multipleOf: 1
+    default: 1
+    title: "ATP Database Data Storage Size"
+    description: "Choose ATP Database Data Storage Size in terabytes."
+
+  ATP_database_db_name1:
+    type: string
+    required: false
+    title: "ATP Database DB Name (region1)"
+    description: "Choose ATP Database name in Region1."
+
+  ATP_database_db_name2:
+    type: string
+    required: false
+    title: "ATP Database DB Name (region2)"
+    description: "Choose ATP Database name in Region2."
+
+  ATP_database_db_name3:
+    type: string
+    required: false
+    title: "ATP Database DB Name (region3)"
+    description: "Choose ATP Database name in Region3."
+
+  ATP_database_db_version:
+    type: enum
+    required: false
+    default: "19c"
+    title: "ATP Database Version"
+    description: "Choose ATP Database version."
+    enum:
+      - "19c"
+
+  ATP_database_display_name1:
+    type: string
+    required: false
+    title: "ATP Database Display Name (region1)"
+    description: "Choose ATP Database display name in Region1."
+
+  ATP_database_display_name2:
+    type: string
+    required: false
+    title: "ATP Database Display Name (region2)"
+    description: "Choose ATP Database display name in Region2."
+
+  ATP_database_display_name3:
+    type: string
+    required: false
+    title: "ATP Database Display Name (region3)"
+    description: "Choose ATP Database display name in Region3."
+
+  ATP_database_license_model:
+    type: enum
+    required: false
+    default: "LICENSE_INCLUDED"
+    title: "ATP Database License Model"
+    description: "Choose ATP Database license model."
+    enum:
+      - "LICENSE_INCLUDED"
+      - "BRING_YOUR_OWN_LICENSE"
+
+  
+
+
+

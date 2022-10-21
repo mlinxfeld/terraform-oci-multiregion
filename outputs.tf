@@ -43,7 +43,6 @@ output "FoggyKitchenATP3_Private_Endpoint_IP" {
   value = [oci_database_autonomous_database.atp3.private_endpoint_ip]
 }
 
-
 # Generated Private Key for WebServer Instances
 output "generated_ssh_private_key" {
   value     = tls_private_key.public_private_key_pair.private_key_pem

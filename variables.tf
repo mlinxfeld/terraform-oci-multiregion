@@ -147,7 +147,6 @@ variable "ATP_database_db_name1" {
   default = "atppriv1"
 }
 
-
 variable "ATP_database_db_name2" {
   default = "atppriv2"
 }
