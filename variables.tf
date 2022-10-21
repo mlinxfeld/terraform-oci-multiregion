@@ -110,6 +110,18 @@ variable "instance_os" {
   default = "Oracle Linux"
 }
 
+variable "instance_name1" {
+  default = "FoggyKitchenWebServer1"
+}
+
+variable "instance_name2" {
+  default = "FoggyKitchenWebServer2"
+}
+
+variable "instance_name3" {
+  default = "FoggyKitchenWebServer3"
+}
+
 variable "linux_os_version" {
   default = "8"
 }
@@ -164,20 +176,20 @@ variable "ATP_database_defined_tags_value" {
 }
 
 variable "ATP_database_display_name1" {
-  default = "atppriv1"
+  default = "FoggyKitchenATP1"
 }
 
 variable "ATP_database_display_name2" {
-  default = "atppriv2"
+  default = "FoggyKitchenATP2"
 }
 
 variable "ATP_database_display_name3" {
-  default = "atppriv3"
+  default = "FoggyKitchenATP3"
 }
 
 variable "ATP_database_freeform_tags" {
   default = {
-    "Owner" = "atppriv1"
+    "Owner" = "FoggyKitchenATP"
   }
 }
 

@@ -29,7 +29,7 @@ variableGroups:
   - ATP_password
   - show_advanced 
 
-- title: "Network Optional Configuration"
+- title: "Region1 Optional Configuration"
   visible: 
       and:
         - show_advanced
@@ -38,14 +38,35 @@ variableGroups:
   - Web-Subnet1-CIDR
   - ATP-VCN1-CIDR
   - ATP-Subnet1-CIDR
+  - instance_name1
+  - ATP_database_db_name1
+  - ATP_database_display_name1
+
+- title: "Region2 Optional Configuration"
+  visible: 
+      and:
+        - show_advanced
+  variables:
   - Web-VCN2-CIDR
   - Web-Subnet2-CIDR
   - ATP-VCN2-CIDR
   - ATP-Subnet2-CIDR
+  - instance_name2
+  - ATP_database_db_name2
+  - ATP_database_display_name2
+
+- title: "Region3 Optional Configuration"
+  visible: 
+      and:
+        - show_advanced
+  variables:
   - Web-VCN3-CIDR
   - Web-Subnet3-CIDR
   - ATP-VCN3-CIDR
   - ATP-Subnet3-CIDR
+  - instance_name3
+  - ATP_database_db_name3
+  - ATP_database_display_name3
 
 - title: "Compute Optional Configuration"
   visible: 
@@ -65,13 +86,7 @@ variableGroups:
   variables:
   - ATP_database_cpu_core_count
   - ATP_database_data_storage_size_in_tbs
-  - ATP_database_db_name1
-  - ATP_database_db_name2
-  - ATP_database_db_name3
   - ATP_database_db_version
-  - ATP_database_display_name1
-  - ATP_database_display_name2
-  - ATP_database_display_name3
   - ATP_database_license_model
 
 variables:
@@ -137,6 +152,7 @@ variables:
     pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
     title: "Web VCN CIDR Block (region1)"
     description: "Choose CIDR block for your Web VCN for the first region."
+    default: "10.1.1.0/24"
 
   ATP-VCN1-CIDR:
     type: string
@@ -144,6 +160,7 @@ variables:
     pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
     title: "ATP VCN CIDR Block (region1)"
     description: "Choose CIDR block for your ATP VCN for the first region."
+    default: "10.1.2.0/24"
 
   Web-Subnet1-CIDR:
     type: string
@@ -151,6 +168,7 @@ variables:
     pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
     title: "Web Subnet CIDR Block (region1)"
     description: "Choose CIDR block for your Web Subnet for the first region."
+    default: "10.1.1.0/24"
 
   ATP-Subnet1-CIDR:
     type: string
@@ -158,6 +176,7 @@ variables:
     pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
     title: "ATP Subnet CIDR Block (region1)"
     description: "Choose CIDR block for your ATP Subnet for the first region."
+    default: "10.1.2.0/24"
 
   Web-VCN2-CIDR:
     type: string
@@ -165,6 +184,7 @@ variables:
     pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
     title: "Web VCN CIDR Block (region2)"
     description: "Choose CIDR block for your Web VCN for the second region."
+    default: "172.16.1.0/24"
 
   ATP-VCN2-CIDR:
     type: string
@@ -172,6 +192,7 @@ variables:
     pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
     title: "ATP VCN CIDR Block (region2)"
     description: "Choose CIDR block for your ATP VCN for the second region."
+    default: "172.16.2.0/24"
 
   Web-Subnet2-CIDR:
     type: string
@@ -179,6 +200,7 @@ variables:
     pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
     title: "Web Subnet CIDR Block (region2)"
     description: "Choose CIDR block for your Web Subnet for the second region."
+    default: "172.16.1.0/24"
 
   ATP-Subnet2-CIDR:
     type: string
@@ -186,6 +208,7 @@ variables:
     pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
     title: "ATP Subnet CIDR Block (region2)"
     description: "Choose CIDR block for your ATP Subnet for the second region."
+    default: "172.16.2.0/24"
 
   Web-VCN3-CIDR:
     type: string
@@ -193,6 +216,7 @@ variables:
     pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
     title: "Web VCN CIDR Block (region3)"
     description: "Choose CIDR block for your Web VCN for the third region."
+    default: "192.168.1.0/24"
 
   ATP-VCN3-CIDR:
     type: string
@@ -200,6 +224,7 @@ variables:
     pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
     title: "ATP VCN CIDR Block (region3)"
     description: "Choose CIDR block for your ATP VCN for the third region."
+    default: "192.168.2.0/24"
 
   Web-Subnet3-CIDR:
     type: string
@@ -207,6 +232,7 @@ variables:
     pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
     title: "Web Subnet CIDR Block (region3)"
     description: "Choose CIDR block for your Web Subnet for the third region."
+    default: "192.168.1.0/24"
 
   ATP-Subnet3-CIDR:
     type: string
@@ -214,6 +240,28 @@ variables:
     pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
     title: "ATP Subnet CIDR Block (region3)"
     description: "Choose CIDR block for your ATP Subnet for the third region."
+    default: "192.168.2.0/24"
+
+  instance_name1:
+    type: string
+    required: false
+    title: "Compute Instance (region1)"
+    description: "Choose Compute Instance Name in Region1."
+    default: "FoggyKitchenWebServer1"
+
+  instance_name2:
+    type: string
+    required: false
+    title: "Compute Instance (region2)"
+    description: "Choose Compute Instance Name in Region2."
+    default: "FoggyKitchenWebServer2"
+
+  instance_name3:
+    type: string
+    required: false
+    title: "Compute Instance (region3)"
+    description: "Choose Compute Instance Name in Region3."
+    default: "FoggyKitchenWebServer3"
 
   Shape:
     type: oci:core:instanceshape:name
