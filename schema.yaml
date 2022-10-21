@@ -208,12 +208,12 @@ variables:
     title: "Web Subnet CIDR Block (region3)"
     description: "Choose CIDR block for your Web Subnet for the third region."
 
-  ATP-Subnet2-CIDR:
+  ATP-Subnet3-CIDR:
     type: string
     required: false
     pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
-    title: "ATP Subnet CIDR Block (region2)"
-    description: "Choose CIDR block for your ATP Subnet for the second region."
+    title: "ATP Subnet CIDR Block (region3)"
+    description: "Choose CIDR block for your ATP Subnet for the third region."
 
   Shape:
     type: oci:core:instanceshape:name
