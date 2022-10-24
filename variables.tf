@@ -193,6 +193,59 @@ variable "ATP_database_freeform_tags" {
   }
 }
 
+variable "ATP_tde_wallet_zip_file1" {
+  default = "tde_wallet_atppriv1.zip"
+}
+
+variable "ATP_tde_wallet_zip_file2" {
+  default = "tde_wallet_atppriv2.zip"
+}
+
+variable "ATP_tde_wallet_zip_file3" {
+  default = "tde_wallet_atppriv3.zip"
+}
+
 variable "ATP_database_license_model" {
   default = "LICENSE_INCLUDED"
 }
+
+variable "ATP_wallet_password_specials" {
+  default = true
+}
+
+variable "ATP_wallet_password_length" {
+  default = 16
+}
+
+variable "ATP_wallet_password_min_numeric" {
+  default = 2
+}
+
+variable "ATP_wallet_password_override_special" {
+  default = ""
+}
+
+variable "oracle_instant_client_version" {
+  default = "19.10"
+}
+
+variable "oracle_instant_client_version_short" {
+  default = "19.10"
+}
+
+variable "enable_dns" {
+  default = true
+}
+
+variable "dns_domain" {
+  default = "foggykitchen.xyz"
+}
+
+variable "dns_a_record_ttl" {
+  default = 30
+}
+
+variable "steering_policy_ttl" {
+  default = 60
+}
+

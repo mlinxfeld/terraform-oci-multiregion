@@ -2,7 +2,7 @@
 
 ## Project description
 
-In this repository, I have documented my hands on experience with Terrafrom for the purpose of multi-region deployment in OCI. This set of HCL based Terraform files which can customized according to any requirements.  
+In this repository, I have documented my hands on experience with Terrafrom for the purpose of multi-region deployment in OCI. It includes also OCI Public DNS Setup and DNS Traffic Steering Policy. This set of HCL based Terraform files which can customized according to any requirements.  
 
 ## Topology Diagram 
 
@@ -52,23 +52,26 @@ Unpacking objects: 100% (10/10), done.
 [opc@terraform-server terraform-oci-multiregion]$ ls -latr
 
 total 2168
-drwxr-xr-x  93 opc opc   2976 Oct 20 10:34 ..
--rw-r--r--   1 opc opc     78 Oct 20 10:34 tls.tf
--rw-r--r--   1 opc opc   1222 Oct 20 12:17 providers.tf
--rw-r--r--   1 opc opc   3096 Oct 20 12:39 iam_policies.tf
--rw-r--r--   1 opc opc   1933 Oct 20 12:43 datasources.tf
--rw-r--r--   1 opc opc    290 Oct 20 12:55 compartment.tf
--rw-r--r--   1 opc opc   5359 Oct 20 12:58 drgs_rpcs.tf
--rwxr-xr-x   1 opc opc   3358 Oct 20 17:23 compute.tf
--rw-r--r--   1 opc opc  13099 Oct 20 17:34 nsg.tf
--rw-r--r--   1 opc opc   2718 Oct 20 17:35 variables.tf
--rw-r--r--   1 opc opc   2882 Oct 20 17:35 atp.tf
--rw-r--r--   1 opc opc  24337 Oct 20 18:10 network.tf
--rw-r--r--   1 opc opc   1417 Oct 20 18:16 outputs.tf
--rw-r--r--@  1 opc opc 719599 Oct 21 10:45 terraform-oci-multiregion.png
--rw-r--r--@  1 opc opc  16153 Oct 21 13:29 README.md
-drwxr-xr-x  25 opc opc    800 Oct 21 13:32 .
--rw-r--r--   1 opc opc   7606 Oct 21 13:32 schema.yaml
+-rw-r--r--   1 opc opc      78 Oct 20 10:34 tls.tf
+-rw-r--r--   1 opc opc    3096 Oct 20 12:39 iam_policies.tf
+-rw-r--r--   1 opc opc    1933 Oct 20 12:43 datasources.tf
+-rw-r--r--   1 opc opc     290 Oct 20 12:55 compartment.tf
+-rw-r--r--   1 opc opc    5359 Oct 20 12:58 drgs_rpcs.tf
+-rw-r--r--   1 opc opc   13099 Oct 20 17:34 nsg.tf
+-rw-r--r--   1 opc opc   24337 Oct 20 18:10 network.tf
+-rw-r--r--@  1 opc opc  719599 Oct 21 10:45 terraform-oci-multiregion.png
+-rwxr-xr-x   1 opc opc    3340 Oct 21 14:27 compute.tf
+drwxr-xr-x  95 opc opc    3040 Oct 21 14:32 ..
+-rw-r--r--   1 opc opc    1222 Oct 22 12:48 providers.tf
+drwxr-xr-x   6 opc opc     192 Oct 22 12:50 templates
+-rw-r--r--   1 opc opc    4015 Oct 22 13:01 atp.tf
+-rw-r--r--   1 opc opc   14356 Oct 22 13:43 remote.tf
+-rw-r--r--   1 opc opc    1508 Oct 24 11:51 outputs.tf
+-rw-r--r--   1 opc opc    3779 Oct 24 11:55 variables.tf
+-rw-r--r--   1 opc opc    3988 Oct 24 12:03 dns.tf
+-rw-r--r--   1 opc opc   14383 Oct 24 12:56 schema.yaml
+drwxr-xr-x  31 opc opc     992 Oct 24 13:02 .
+-rw-r--r--@  1 opc opc   17738 Oct 24 13:03 README.md
 ```
 
 #### STEP 2.
@@ -101,6 +104,7 @@ export TF_VAR_region1="eu-frankfurt-1"
 export TF_VAR_region2="eu-amsterdam-1"
 export TF_VAR_region3="us-phoenix-1"
 export TF_VAR_ATP_password="BEstrO0ng_#11"
+export TF_VAR_domain_name="<mydomain.com>"
 
 [opc@terraform-server terraform-oci-multiregion]$ source setup_oci_tf_vars.sh
 ```
@@ -169,37 +173,38 @@ Terraform will perform the following actions:
 
 (...)
 
-Plan: 98 to add, 0 to change, 0 to destroy.
+Plan: 111 to add, 0 to change, 0 to destroy.
 
 Changes to Outputs:
-  - FoggyKitchenATP1_Private_Endpoint_IP = [
-      - "10.1.2.109",
-    ] -> null
-  - FoggyKitchenATP2_Private_Endpoint_IP = [
-      - "172.16.2.242",
-    ] -> null
-  - FoggyKitchenATP3_Private_Endpoint_IP = [
-      - "192.168.2.71",
-    ] -> null
-  - FoggyKitchenWebserver1_PrivateIP     = [
-      - "10.1.1.157",
-    ] -> null
-  - FoggyKitchenWebserver1_PublicIP      = [
-      - "130.61.144.59",
-    ] -> null
-  - FoggyKitchenWebserver2_PrivateIP     = [
-      - "172.16.1.145",
-    ] -> null
-  - FoggyKitchenWebserver2_PublicIP      = [
-      - "158.101.205.250",
-    ] -> null
-  - FoggyKitchenWebserver3_PrivateIP     = [
-      - "192.168.1.166",
-    ] -> null
-  - FoggyKitchenWebserver3_PublicIP      = [
-      - "129.146.22.196",
-    ] -> null
-  - generated_ssh_private_key            = (sensitive value)
+  + FoggyKitchenATP1_Private_Endpoint_IP = [
+      + (known after apply),
+    ]
+  + FoggyKitchenATP2_Private_Endpoint_IP = [
+      + (known after apply),
+    ]
+  + FoggyKitchenATP3_Private_Endpoint_IP = [
+      + (known after apply),
+    ]
+  + FoggyKitchenWebserver1_PrivateIP     = [
+      + (known after apply),
+    ]
+  + FoggyKitchenWebserver1_PublicIP      = [
+      + (known after apply),
+    ]
+  + FoggyKitchenWebserver2_PrivateIP     = [
+      + (known after apply),
+    ]
+  + FoggyKitchenWebserver2_PublicIP      = [
+      + (known after apply),
+    ]
+  + FoggyKitchenWebserver3_PrivateIP     = [
+      + (known after apply),
+    ]
+  + FoggyKitchenWebserver3_PublicIP      = [
+      + (known after apply),
+    ]
+  + generated_ssh_private_key            = (sensitive value)
+  + oci_dns_nameservers                  = (known after apply)
 
 Do you want to perform these actions?
   Terraform will perform the actions described above.
@@ -241,38 +246,53 @@ oci_database_autonomous_database.atp2: Still creating... [4m40s elapsed]
 oci_database_autonomous_database.atp2: Still creating... [4m50s elapsed]
 oci_database_autonomous_database.atp2: Creation complete after 4m57s [id=ocid1.autonomousdatabase.oc1.eu-amsterdam-1.anqw2ljrnlc5nbyafvtvx4xzbhcz2524fgzt54vkkc3vpkdglyg4hnp2tioa]
 
-Apply complete! Resources: 98 added, 0 changed, 0 destroyed.
+(...)
+Apply complete! Resources: 111 added, 0 changed, 0 destroyed.
 
 Outputs:
 
 FoggyKitchenATP1_Private_Endpoint_IP = [
-  "10.1.2.184",
+  "10.1.2.142",
 ]
 FoggyKitchenATP2_Private_Endpoint_IP = [
-  "172.16.2.115",
+  "172.16.2.83",
 ]
 FoggyKitchenATP3_Private_Endpoint_IP = [
-  "192.168.2.172",
+  "192.168.2.130",
 ]
 FoggyKitchenWebserver1_PrivateIP = [
-  "10.1.1.228",
+  "10.1.1.85",
 ]
 FoggyKitchenWebserver1_PublicIP = [
-  "130.61.237.12",
+  "130.61.85.128",
 ]
 FoggyKitchenWebserver2_PrivateIP = [
-  "172.16.1.225",
+  "172.16.1.95",
 ]
 FoggyKitchenWebserver2_PublicIP = [
-  "143.47.176.118",
+  "193.123.62.12",
 ]
 FoggyKitchenWebserver3_PrivateIP = [
-  "192.168.1.247",
+  "192.168.1.77",
 ]
 FoggyKitchenWebserver3_PublicIP = [
-  "129.146.52.254",
+  "158.101.19.204",
 ]
 generated_ssh_private_key = <sensitive>
+oci_dns_nameservers = tolist([
+  {
+    "hostname" = "ns1.p68.dns.oraclecloud.net"
+  },
+  {
+    "hostname" = "ns2.p68.dns.oraclecloud.net"
+  },
+  {
+    "hostname" = "ns3.p68.dns.oraclecloud.net"
+  },
+  {
+    "hostname" = "ns4.p68.dns.oraclecloud.net"
+  },
+])
 ```
 
 #### STEP 6.
@@ -296,37 +316,51 @@ data.oci_identity_availability_domains.region2-ADs: Read complete after 0s [id=I
 
 (...)
 
-Plan: 0 to add, 0 to change, 98 to destroy.
+Plan: 0 to add, 0 to change, 111 to destroy.
 
 Changes to Outputs:
   - FoggyKitchenATP1_Private_Endpoint_IP = [
-      - "10.1.2.109",
+      - "10.1.2.142",
     ] -> null
   - FoggyKitchenATP2_Private_Endpoint_IP = [
-      - "172.16.2.242",
+      - "172.16.2.83",
     ] -> null
   - FoggyKitchenATP3_Private_Endpoint_IP = [
-      - "192.168.2.71",
+      - "192.168.2.130",
     ] -> null
   - FoggyKitchenWebserver1_PrivateIP     = [
-      - "10.1.1.157",
+      - "10.1.1.85",
     ] -> null
   - FoggyKitchenWebserver1_PublicIP      = [
-      - "130.61.144.59",
+      - "130.61.85.128",
     ] -> null
   - FoggyKitchenWebserver2_PrivateIP     = [
-      - "172.16.1.145",
+      - "172.16.1.95",
     ] -> null
   - FoggyKitchenWebserver2_PublicIP      = [
-      - "158.101.205.250",
+      - "193.123.62.12",
     ] -> null
   - FoggyKitchenWebserver3_PrivateIP     = [
-      - "192.168.1.166",
+      - "192.168.1.77",
     ] -> null
   - FoggyKitchenWebserver3_PublicIP      = [
-      - "129.146.22.196",
+      - "158.101.19.204",
     ] -> null
   - generated_ssh_private_key            = (sensitive value)
+  - oci_dns_nameservers                  = [
+      - {
+          - hostname = "ns1.p68.dns.oraclecloud.net"
+        },
+      - {
+          - hostname = "ns2.p68.dns.oraclecloud.net"
+        },
+      - {
+          - hostname = "ns3.p68.dns.oraclecloud.net"
+        },
+      - {
+          - hostname = "ns4.p68.dns.oraclecloud.net"
+        },
+    ] -> null
 
 Do you want to perform these actions?
   Terraform will perform the actions described above.
@@ -366,5 +400,5 @@ oci_core_virtual_network.FoggyKitchenATPVCN3: Destruction complete after 1s
 oci_identity_compartment.FoggyKitchenCompartment: Destroying... [id=ocid1.compartment.oc1..aaaaaaaayxvhhjidfxsq35muvshgxv62ac2mn6mi2yo2xqzsq53jgkuozfwq]
 oci_identity_compartment.FoggyKitchenCompartment: Destruction complete after 0s
 
-Destroy complete! Resources: 98 destroyed.
+Destroy complete! Resources: 111 destroyed.
 ```

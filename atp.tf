@@ -1,3 +1,12 @@
+# Radom Password Generator
+
+resource "random_password" "wallet_password" {
+  length           = var.ATP_wallet_password_length
+  special          = var.ATP_wallet_password_specials
+  min_numeric      = var.ATP_wallet_password_min_numeric
+  override_special = var.ATP_wallet_password_override_special
+}
+
 # ATP1 (region1)
 
 resource "oci_database_autonomous_database" "atp1" {
@@ -17,6 +26,13 @@ resource "oci_database_autonomous_database" "atp1" {
   lifecycle {
     ignore_changes = [defined_tags["Oracle-Tags.CreatedBy"], defined_tags["Oracle-Tags.CreatedOn"]]
   }
+}
+
+resource "oci_database_autonomous_database_wallet" "atp1_wallet" {
+  provider               = oci.region1
+  autonomous_database_id = oci_database_autonomous_database.atp1.id
+  password               = random_password.wallet_password.result
+  base64_encode_content  = "true"
 }
 
 # ATP2 (region2)
@@ -40,6 +56,13 @@ resource "oci_database_autonomous_database" "atp2" {
   }
 }
 
+resource "oci_database_autonomous_database_wallet" "atp2_wallet" {
+  provider               = oci.region2
+  autonomous_database_id = oci_database_autonomous_database.atp2.id
+  password               = random_password.wallet_password.result
+  base64_encode_content  = "true"
+}
+
 # ATP2 (region3)
 
 resource "oci_database_autonomous_database" "atp3" {
@@ -59,4 +82,11 @@ resource "oci_database_autonomous_database" "atp3" {
   lifecycle {
     ignore_changes = [defined_tags["Oracle-Tags.CreatedBy"], defined_tags["Oracle-Tags.CreatedOn"]]
   }
+}
+
+resource "oci_database_autonomous_database_wallet" "atp3_wallet" {
+  provider               = oci.region3
+  autonomous_database_id = oci_database_autonomous_database.atp3.id
+  password               = random_password.wallet_password.result
+  base64_encode_content  = "true"
 }

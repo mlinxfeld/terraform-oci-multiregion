@@ -49,3 +49,7 @@ output "generated_ssh_private_key" {
   sensitive = true
 }
 
+output "oci_dns_nameservers" {
+  value = oci_dns_zone.FoggyKitchenDNSZone[0].nameservers
+}
+

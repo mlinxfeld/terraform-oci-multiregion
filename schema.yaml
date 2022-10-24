@@ -18,6 +18,15 @@ variableGroups:
   - bastion_ports
   - ATP_database_defined_tags_value
   - ATP_database_freeform_tags
+  - ATP_wallet_password_specials
+  - ATP_wallet_password_length
+  - ATP_wallet_password_min_numeric
+  - ATP_wallet_password_override_special
+  - oracle_instant_client_version
+  - oracle_instant_client_version_short
+  - ATP_tde_wallet_zip_file1
+  - ATP_tde_wallet_zip_file2
+  - ATP_tde_wallet_zip_file3
 
 - title: "Required Configuration"
   visible: true  
@@ -27,6 +36,7 @@ variableGroups:
   - region2
   - region3
   - ATP_password
+  - enable_dns
   - show_advanced 
 
 - title: "Region1 Optional Configuration"
@@ -89,6 +99,15 @@ variableGroups:
   - ATP_database_db_version
   - ATP_database_license_model
 
+- title: "DNS Optional Configuration"
+  visible: 
+      and:
+        - show_advanced
+  variables:
+  - dns_domain
+  - dns_a_record_ttl
+  - steering_policy_ttl
+
 variables:
 
   show_advanced:
@@ -143,6 +162,13 @@ variables:
     minLength: 12
     maxLength: 30
     pattern: ^[A-Za-z][A-Za-z0-9_#\$]+[A-Za-z0-9_#]$ 
+
+  enable_dns:
+    type: boolean
+    title: "Configure DNS Zone and Traffic Managment?"
+    description: "Decide if you want to configure DNS Public Zone and Traffic Management."
+    visible: true
+    default: false  
 
   # Optional Configuration
 
@@ -415,7 +441,30 @@ variables:
       - "LICENSE_INCLUDED"
       - "BRING_YOUR_OWN_LICENSE"
 
-  
+  dns_domain:
+    type: string
+    required: false
+    title: "DNS Domian Name"
+    description: "Define DNS Domain name for DNS Management."
 
+  dns_a_record_ttl:
+    type: number
+    required: false
+    minimum: 1
+    maximum: 128
+    multipleOf: 1
+    default: 30
+    title: "DNS A Record TTL"
+    description: "Choose Time To Leave value for DNS A Record."
+  
+  steering_policy_ttl:
+    type: number
+    required: false
+    minimum: 1
+    maximum: 128
+    multipleOf: 1
+    default: 60
+    title: "DNS Steering Policy TTL"
+    description: "Choose Time To Leave value for DNS Steering Policy."
 
 
