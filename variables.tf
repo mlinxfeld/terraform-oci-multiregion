@@ -238,7 +238,7 @@ variable "enable_dns" {
 }
 
 variable "dns_domain" {
-  default = "foggykitchen.xyz"
+  default = "mydomain.xyz"
 }
 
 variable "dns_a_record_ttl" {

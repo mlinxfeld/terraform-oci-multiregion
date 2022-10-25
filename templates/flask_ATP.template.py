@@ -1,9 +1,9 @@
-from flask import Flask, render_template, url_for, request
+# flask_ATP.py
+
+from config import app
 import os
 import socket
 import cx_Oracle
-
-app = Flask(__name__)
 
 @app.route('/')
 def oracleatpcheck():
@@ -18,4 +18,4 @@ def oracleatpcheck():
      return 'FoggyKitchen.com: Here is OCI ATP name v$database: {}'.format(dbname[0])
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=80, debug=True)
+    app.run()

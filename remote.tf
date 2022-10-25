@@ -1,5 +1,12 @@
 # FoggyKitchenWebServer1 Configuration Management
 
+data "template_file" "config_py_template1" {
+  template = file("${path.module}/templates/config.template.py")
+  vars = {
+  }
+}
+
+
 data "template_file" "flask_ATP_py_template1" {
   template = file("${path.module}/templates/flask_ATP.template.py")
 
@@ -12,6 +19,13 @@ data "template_file" "flask_ATP_py_template1" {
   }
 }
 
+data "template_file" "flask_ATP_service_template1" {
+  template = file("${path.module}/templates/flask_ATP.template.service")
+  vars = {
+  }
+}
+
+/*
 data "template_file" "flask_ATP_sh_template1" {
   template = file("${path.module}/templates/flask_ATP.template.sh")
 
@@ -19,6 +33,7 @@ data "template_file" "flask_ATP_sh_template1" {
     oracle_instant_client_version_short = var.oracle_instant_client_version_short
   }
 }
+*/
 
 data "template_file" "flask_bootstrap_template1" {
   template = file("${path.module}/templates/flask_bootstrap.template.sh")
@@ -93,6 +108,20 @@ resource "null_resource" "FoggyKitchenWebserver1_ConfigMgmt" {
       agent       = false
       timeout     = "10m"
     }
+    content     = data.template_file.config_py_template1.rendered
+    destination = "/tmp/config.py"
+  }
+
+  provisioner "file" {
+    connection {
+      type        = "ssh"
+      user        = "opc"
+      host        = oci_core_instance.FoggyKitchenWebserver1.public_ip
+      private_key = tls_private_key.public_private_key_pair.private_key_pem
+      script_path = "/home/opc/myssh.sh"
+      agent       = false
+      timeout     = "10m"
+    }
     content     = data.template_file.flask_ATP_py_template1.rendered
     destination = "/tmp/flask_ATP.py"
   }
@@ -107,9 +136,25 @@ resource "null_resource" "FoggyKitchenWebserver1_ConfigMgmt" {
       agent       = false
       timeout     = "10m"
     }
+    content     = data.template_file.flask_ATP_service_template1.rendered
+    destination = "/tmp/flask_ATP.service"
+  }  
+
+/*
+  provisioner "file" {
+    connection {
+      type        = "ssh"
+      user        = "opc"
+      host        = oci_core_instance.FoggyKitchenWebserver1.public_ip
+      private_key = tls_private_key.public_private_key_pair.private_key_pem
+      script_path = "/home/opc/myssh.sh"
+      agent       = false
+      timeout     = "10m"
+    }
     content     = data.template_file.flask_ATP_sh_template1.rendered
     destination = "/tmp/flask_ATP.sh"
   }
+*/
 
   provisioner "file" {
     connection {
@@ -144,6 +189,12 @@ resource "null_resource" "FoggyKitchenWebserver1_ConfigMgmt" {
 
 # FoggyKitchenWebServer2 Configuration Management
 
+data "template_file" "config_py_template2" {
+  template = file("${path.module}/templates/config.template.py")
+  vars = {
+  }
+}
+
 data "template_file" "flask_ATP_py_template2" {
   template = file("${path.module}/templates/flask_ATP.template.py")
 
@@ -156,6 +207,13 @@ data "template_file" "flask_ATP_py_template2" {
   }
 }
 
+data "template_file" "flask_ATP_service_template2" {
+  template = file("${path.module}/templates/flask_ATP.template.service")
+  vars = {
+  }
+}
+
+/*
 data "template_file" "flask_ATP_sh_template2" {
   template = file("${path.module}/templates/flask_ATP.template.sh")
 
@@ -163,6 +221,7 @@ data "template_file" "flask_ATP_sh_template2" {
     oracle_instant_client_version_short = var.oracle_instant_client_version_short
   }
 }
+*/
 
 data "template_file" "flask_bootstrap_template2" {
   template = file("${path.module}/templates/flask_bootstrap.template.sh")
@@ -237,6 +296,20 @@ resource "null_resource" "FoggyKitchenWebserver2_ConfigMgmt" {
       agent       = false
       timeout     = "10m"
     }
+    content     = data.template_file.config_py_template2.rendered
+    destination = "/tmp/config.py"
+  }
+
+  provisioner "file" {
+    connection {
+      type        = "ssh"
+      user        = "opc"
+      host        = oci_core_instance.FoggyKitchenWebserver2.public_ip
+      private_key = tls_private_key.public_private_key_pair.private_key_pem
+      script_path = "/home/opc/myssh.sh"
+      agent       = false
+      timeout     = "10m"
+    }
     content     = data.template_file.flask_ATP_py_template2.rendered
     destination = "/tmp/flask_ATP.py"
   }
@@ -251,9 +324,25 @@ resource "null_resource" "FoggyKitchenWebserver2_ConfigMgmt" {
       agent       = false
       timeout     = "10m"
     }
+    content     = data.template_file.flask_ATP_service_template2.rendered
+    destination = "/tmp/flask_ATP.service"
+  }  
+
+/*
+  provisioner "file" {
+    connection {
+      type        = "ssh"
+      user        = "opc"
+      host        = oci_core_instance.FoggyKitchenWebserver2.public_ip
+      private_key = tls_private_key.public_private_key_pair.private_key_pem
+      script_path = "/home/opc/myssh.sh"
+      agent       = false
+      timeout     = "10m"
+    }
     content     = data.template_file.flask_ATP_sh_template2.rendered
     destination = "/tmp/flask_ATP.sh"
   }
+*/
 
   provisioner "file" {
     connection {
@@ -288,6 +377,12 @@ resource "null_resource" "FoggyKitchenWebserver2_ConfigMgmt" {
 
 # FoggyKitchenWebServer3 Configuration Management
 
+data "template_file" "config_py_template3" {
+  template = file("${path.module}/templates/config.template.py")
+  vars = {
+  }
+}
+
 data "template_file" "flask_ATP_py_template3" {
   template = file("${path.module}/templates/flask_ATP.template.py")
 
@@ -300,11 +395,19 @@ data "template_file" "flask_ATP_py_template3" {
   }
 }
 
+/*
 data "template_file" "flask_ATP_sh_template3" {
   template = file("${path.module}/templates/flask_ATP.template.sh")
 
   vars = {
     oracle_instant_client_version_short = var.oracle_instant_client_version_short
+  }
+}
+*/
+
+data "template_file" "flask_ATP_service_template3" {
+  template = file("${path.module}/templates/flask_ATP.template.service")
+  vars = {
   }
 }
 
@@ -381,6 +484,20 @@ resource "null_resource" "FoggyKitchenWebserver3_ConfigMgmt" {
       agent       = false
       timeout     = "10m"
     }
+    content     = data.template_file.config_py_template3.rendered
+    destination = "/tmp/config.py"
+  }
+
+  provisioner "file" {
+    connection {
+      type        = "ssh"
+      user        = "opc"
+      host        = oci_core_instance.FoggyKitchenWebserver3.public_ip
+      private_key = tls_private_key.public_private_key_pair.private_key_pem
+      script_path = "/home/opc/myssh.sh"
+      agent       = false
+      timeout     = "10m"
+    }
     content     = data.template_file.flask_ATP_py_template3.rendered
     destination = "/tmp/flask_ATP.py"
   }
@@ -395,9 +512,25 @@ resource "null_resource" "FoggyKitchenWebserver3_ConfigMgmt" {
       agent       = false
       timeout     = "10m"
     }
+    content     = data.template_file.flask_ATP_service_template3.rendered
+    destination = "/tmp/flask_ATP.service"
+  }  
+
+  /*
+  provisioner "file" {
+    connection {
+      type        = "ssh"
+      user        = "opc"
+      host        = oci_core_instance.FoggyKitchenWebserver3.public_ip
+      private_key = tls_private_key.public_private_key_pair.private_key_pem
+      script_path = "/home/opc/myssh.sh"
+      agent       = false
+      timeout     = "10m"
+    }
     content     = data.template_file.flask_ATP_sh_template3.rendered
     destination = "/tmp/flask_ATP.sh"
   }
+  */
 
   provisioner "file" {
     connection {

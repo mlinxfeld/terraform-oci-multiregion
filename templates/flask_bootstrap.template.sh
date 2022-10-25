@@ -36,13 +36,14 @@ else
   fi
 fi 
 
-echo '== 2. Install pip3 install for cx_Oracle and flask'
+echo '== 2. Install pip3 install for cx_Oracle, flask and gunicorn'
 pip3 install cx_Oracle
 pip3 install flask
+pip3 install gunicorn
 
-echo '== 3. Disabling firewall and starting HTTPD service'
-service firewalld stop
-service firewalld disable
+echo '== 3. Opening port HTTP (80) in Firewall'
+sudo firewall-cmd --zone=public --permanent --add-port=80/tcp
+sudo firewall-cmd --reload
 
 echo '== 4. Unzip TDE wallet zip file'
 unzip -o /tmp/${ATP_tde_wallet_zip_file} -d /usr/lib/oracle/${oracle_instant_client_version_short}/client64/lib/network/admin/
@@ -53,7 +54,17 @@ cp /tmp/sqlnet.ora /usr/lib/oracle/${oracle_instant_client_version_short}/client
 echo '== 6. Update /etc/hosts with ATP instance FQDN'
 echo '${ATP_private_ip} true.adb.${region}.oraclecloud.com' >> /etc/hosts
 
-echo '== 7. Run Flask with ATP access'
-python3 --version
-chmod +x /tmp/flask_ATP.sh
-nohup /tmp/flask_ATP.sh > /tmp/flask_ATP.log &
+#echo '== 7. Run Flask with ATP access'
+#python3 --version
+#chmod +x /tmp/flask_ATP.sh
+#nohup /tmp/flask_ATP.sh > /tmp/flask_ATP.log &
+
+echo '== 7. Enable flask_ATP as systemd service'
+sudo cp /tmp/flask_ATP.service /etc/systemd/system/flask_ATP.service
+sudo systemctl start flask_ATP
+sudo systemctl enable flask_ATP
+sudo systemctl status flask_ATP --no-pager --full
+
+
+
+

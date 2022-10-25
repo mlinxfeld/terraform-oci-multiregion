@@ -37,6 +37,7 @@ variableGroups:
   - region3
   - ATP_password
   - enable_dns
+  - dns_domain
   - show_advanced 
 
 - title: "Region1 Optional Configuration"
@@ -104,7 +105,6 @@ variableGroups:
       and:
         - show_advanced
   variables:
-  - dns_domain
   - dns_a_record_ttl
   - steering_policy_ttl
 
@@ -168,7 +168,17 @@ variables:
     title: "Configure DNS Zone and Traffic Managment?"
     description: "Decide if you want to configure DNS Public Zone and Traffic Management."
     visible: true
-    default: false  
+    default: false 
+    required: true
+
+  dns_domain:
+    type: string
+    required: true
+    title: "DNS Domian Name"
+    description: "Define DNS Domain name for DNS Management."
+    visible: 
+      and:
+        - enable_dns 
 
   # Optional Configuration
 
@@ -440,12 +450,6 @@ variables:
     enum:
       - "LICENSE_INCLUDED"
       - "BRING_YOUR_OWN_LICENSE"
-
-  dns_domain:
-    type: string
-    required: false
-    title: "DNS Domian Name"
-    description: "Define DNS Domain name for DNS Management."
 
   dns_a_record_ttl:
     type: number
